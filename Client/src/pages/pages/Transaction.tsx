@@ -1,8 +1,8 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { Column } from "react-table";
-import AdminSidebar from "../components/AdminSidebar";
+import AdminSidebar from "../../components/admin/AdminSidebar";
 import { ReactElement, useState, useCallback } from "react";
-import TableHOC from "../components/TableHOC";
+import TableHOC from "../../components/admin/TableHOC";
 import { Link } from "react-router-dom";
 
 interface DataType {
