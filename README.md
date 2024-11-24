@@ -1,3 +1,3 @@
 eMarket
 
-An ecommerce website
+An ecommerce webapplication built using typescript.
