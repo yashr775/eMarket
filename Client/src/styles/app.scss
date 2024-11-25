@@ -4,11 +4,16 @@
 @use "admin-styles/dashboardapp";
 @use "admin-styles/mediaquery";
 @use "admin-styles/products";
+@use "home";
 
 
 $color1: white;
 $color2: rgb(46, 46, 46);
 $color3: rgb(0, 104, 136);
+
+body{
+  user-select:none;
+}
 
 :root {
   font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
