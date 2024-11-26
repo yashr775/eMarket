@@ -3,7 +3,7 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { lazy, Suspense } from "react";
 import Loader from "./components/loader";
 
-const Home = lazy(() => import("./pages/home"));
+const Home = lazy(() => import("./pages/Home"));
 const Cart = lazy(() => import("./pages/cart"));
 const Search = lazy(() => import("./pages/search"));
 const Dashboard = lazy(() => import("./pages/pages/Dashboard"));

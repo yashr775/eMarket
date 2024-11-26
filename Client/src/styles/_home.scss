@@ -1,4 +1,7 @@
 @use "admin-styles/mixin";
+$color1: white;
+$color2: rgb(46, 46, 46);
+$color3: rgb(0, 104, 136);
 
 .home {
     padding: 2rem 5%;
@@ -190,7 +193,7 @@
       @include mixin.grid(1fr 1fr 1fr, 0, auto);
       list-style: none;
       > li {
-        @include flex(column);
+        @include mixin.flex(column);
         > div {
           background-color: black;
           @include mixin.square(5rem);
@@ -245,7 +248,7 @@
       }
   
       div {
-        @include mixnin.flex;
+        @include mixin.flex;
         flex-wrap: wrap;
         gap: 3rem;
   
