@@ -10,6 +10,7 @@ import { Skeleton } from "../components/loader";
 import videoCover from "../assets/videos/cover.mp4";
 import ProductCard from "../components/product-card";
 import { CartItem } from "../types/types";
+import Header from "../components/Header";
 
 const coverMessage =
   "Fashion isn't just clothes; it's a vibrant language. Silhouettes and textures speak volumes, a conversation starter with every bold print. It's a way to tell our story, a confidence booster, or a playful exploration. From elegance to rebellion, fashion lets us navigate the world in style.".split(

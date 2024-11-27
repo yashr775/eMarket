@@ -14,6 +14,8 @@ const BarCharts = lazy(() => import("./pages/pages/Charts/Barcharts"));
 const PieCharts = lazy(() => import("./pages/pages/Charts/PieCharts"));
 const LineCharts = lazy(() => import("./pages/pages/Charts/LineCharts"));
 const NewProduct = lazy(() => import("./pages/pages/management/NewProduct"));
+const Header = lazy(() => import("./components/Header"));
+
 const ProductManagement = lazy(
   () => import("./pages/pages/management/ProductManagement")
 );
@@ -27,9 +29,9 @@ const Coupon = lazy(() => import("./pages/pages/apps/Coupon"));
 
 const App = () => {
   return (
-    <Suspense fallback={<Loader />}>
-      {" "}
-      <Router>
+    <Router>
+      <Suspense fallback={<Loader />}>
+        <Header />
         <Routes>
           <Route path={"/"} element={<Home />}></Route>
           <Route path={"/search"} element={<Search />}></Route>
@@ -54,8 +56,8 @@ const App = () => {
           <Route path="/admin/app/coupon" element={<Coupon />} />
           <Route path="/admin/app/toss" element={<Toss />} />
         </Routes>
-      </Router>
-    </Suspense>
+      </Suspense>
+    </Router>
   );
 };
 
