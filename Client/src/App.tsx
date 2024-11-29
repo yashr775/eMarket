@@ -27,6 +27,7 @@ const Stopwatch = lazy(() => import("./pages/pages/apps/Stopwatch"));
 const Toss = lazy(() => import("./pages/pages/apps/Toss"));
 const Coupon = lazy(() => import("./pages/pages/apps/Coupon"));
 const Shipping = lazy(() => import("./pages/shipping"));
+const Login = lazy(() => import("./pages/login"));
 
 const App = () => {
   return (
@@ -37,6 +38,7 @@ const App = () => {
           <Route path={"/"} element={<Home />}></Route>
           <Route path={"/search"} element={<Search />}></Route>
           <Route path={"/cart"} element={<Cart />}></Route>
+          <Route path={"/login"} element={<Login />}></Route>
           <Route path={"/shipping"} element={<Shipping />}></Route>
           <Route path="/admin/dashboard" element={<Dashboard />} />
           <Route path="/admin/product" element={<Products />} />
