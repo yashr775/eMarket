@@ -28,6 +28,7 @@ const Toss = lazy(() => import("./pages/pages/apps/Toss"));
 const Coupon = lazy(() => import("./pages/pages/apps/Coupon"));
 const Shipping = lazy(() => import("./pages/shipping"));
 const Login = lazy(() => import("./pages/login"));
+const Orders = lazy(() => import("./pages/orders"));
 
 const App = () => {
   return (
@@ -39,7 +40,12 @@ const App = () => {
           <Route path={"/search"} element={<Search />}></Route>
           <Route path={"/cart"} element={<Cart />}></Route>
           <Route path={"/login"} element={<Login />}></Route>
+
+          {/* Protected Route */}
+          <Route path="/orders" element={<Orders />} />
           <Route path={"/shipping"} element={<Shipping />}></Route>
+
+          {/* Admin Route */}
           <Route path="/admin/dashboard" element={<Dashboard />} />
           <Route path="/admin/product" element={<Products />} />
           <Route path="/admin/transaction" element={<Transaction />} />

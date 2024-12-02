@@ -15,7 +15,7 @@ const searchedData = {
       name: "Smartphone",
       price: 500,
       stock: 20,
-      photos: ["https://via.placeholder.com/150"],
+      photos: [{ url: "https://via.placeholder.com/150", public_id: "image1" }],
     },
     {
       _id: "2",
