@@ -54,6 +54,10 @@ const schema = new mongoose.Schema(
 
 schema.virtual("age").get(function(){
 
+    if (!this.dob) {
+        return null; 
+      }
+
     const today = new Date();
     const dob = this.dob;
 
