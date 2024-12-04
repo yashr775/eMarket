@@ -9,13 +9,22 @@ const newUser = async (
 ) => {
   try {
     const { name, photo, gender, _id, dob, email } = req.body;
-
-    const user = await User.create({ name, photo, gender, _id, dob, email });
+return next(new Error("My Error"))
+    const user = await User.create({
+      name,
+      photo,
+      gender,
+      _id,
+      dob: new Date(dob),
+      email,
+    });
 
     res
       .status(200)
       .json({ success: true, message: `Welcome user ${user.name}` });
-  } catch (error) {}
+  } catch (error) {
+    res.status(400).json({ success: false, message: error });
+  }
 };
 
 export { newUser };
