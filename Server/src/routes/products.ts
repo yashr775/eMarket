@@ -1,6 +1,7 @@
 import express from "express";
 import { singleUpload } from "../middlewares/multer.js";
 import {
+  deleteProduct,
   getAdminProducts,
   getAllCategories,
   getLatestProducts,
@@ -17,6 +18,10 @@ app.get("/latest", getLatestProducts);
 app.get("/categories", getAllCategories);
 app.get("/admin-products", getAdminProducts);
 
-app.route("/:id").get(getSingleProduct).put(singleUpload, updateProduct);
+app
+  .route("/:id")
+  .get(getSingleProduct)
+  .put(singleUpload, updateProduct)
+  .delete(deleteProduct);
 
 export default app;

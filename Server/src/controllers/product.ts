@@ -8,7 +8,6 @@ import { rm } from "fs";
 const newProduct = TryCatch(
   async (req: Request<{}, {}, NewProductRequestBody>, res, next) => {
     const { name, price, stock, category, description } = req.body;
-    console.log(req.body);
     const photo = req.file;
 
     if (!photo) next(new ErrorHandler("Please add photo", 400));
@@ -60,8 +59,6 @@ const getAdminProducts = TryCatch(async (req, res, next) => {
 const getSingleProduct = TryCatch(async (req, res, next) => {
   const id = req.params.id;
 
-  console.log(id);
-
   const product = await Product.findById(id);
   console.log(product);
   return res.status(200).json({
@@ -100,6 +97,28 @@ const updateProduct = TryCatch(async (req, res, next) => {
   });
 });
 
+const deleteProduct = TryCatch(async (req, res, next) => {
+  const id = req.params.id;
+
+  const product = await Product.findById(id);
+
+  if (!product) return next(new ErrorHandler("Product Not Found", 404));
+
+
+
+  rm(product.photos!,()=>{
+    console.log("Product photo deleted")
+  })
+
+  await Product.deleteOne();
+
+  return res.status(200).json({
+    success: true,
+    message: "Product Deleted Successfully",
+  });
+
+});
+
 export {
   newProduct,
   getLatestProducts,
@@ -107,4 +126,5 @@ export {
   getAdminProducts,
   getSingleProduct,
   updateProduct,
+  deleteProduct,
 };
