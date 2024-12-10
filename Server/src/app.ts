@@ -4,6 +4,7 @@ import productRoute from "./routes/products.js"
 import { connectDB } from "./utils/features.js";
 import dotenv from "dotenv"
 import { errorMiddleware } from "./middlewares/error.js";
+import NodeCache from "node-cache";
 
 dotenv.config({ path: ".env" });
 
@@ -14,6 +15,7 @@ app.use(express.json());
 
 connectDB(MONGOURL);
 
+export const myCache = new NodeCache();
 
 
 app.get("/",(req,res)=>{
