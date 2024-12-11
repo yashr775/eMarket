@@ -9,6 +9,7 @@ import { Product } from "../models/product.js";
 import ErrorHandler from "../utils/utility-class.js";
 import { rm } from "fs";
 import { myCache } from "../app.js";
+import { invalidateCache } from "../utils/features.js";
 // import { faker } from "@faker-js/faker";
 
 const newProduct = TryCatch(
@@ -34,6 +35,8 @@ const newProduct = TryCatch(
       photos: photo?.path,
       description,
     });
+
+    await invalidateCache({product:true})
 
     return res
       .status(201)
