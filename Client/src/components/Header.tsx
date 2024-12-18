@@ -1,3 +1,4 @@
+/* eslint-disable no-useless-catch */
 import { useState } from "react";
 import {
   FaSearch,
@@ -7,16 +8,26 @@ import {
   FaUser,
 } from "react-icons/fa";
 import { Link } from "react-router-dom";
+import { User } from "../types/types";
+import { signOut } from "firebase/auth";
+import { toast } from "react-hot-toast";
+import { auth } from "../../firebase";
 
-const user = {
-  _id: "",
-  role: "",
-};
+interface PropType {
+  user: User | null;
+}
 
-const Header = () => {
+const Header = ({ user }: PropType) => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
 
-  const logoutHandler = () => {};
+  const logoutHandler = async () => {
+    try {
+      await signOut(auth);
+      toast.success("Logout successfully");
+    } catch (error) {
+      throw error;
+    }
+  };
 
   return (
     <nav className="header">

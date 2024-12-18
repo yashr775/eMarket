@@ -6,63 +6,64 @@ import { FaAnglesDown, FaHeadset } from "react-icons/fa6";
 import { LuShieldCheck } from "react-icons/lu";
 import { TbTruckDelivery } from "react-icons/tb";
 import { Link } from "react-router-dom";
-import { Skeleton } from "../components/loader";
 import videoCover from "../assets/videos/cover.mp4";
+import { Skeleton } from "../components/loader";
 import ProductCard from "../components/product-card";
+import { useLatestProductsQuery } from "../redux/api/productAPI";
 import { CartItem } from "../types/types";
-import Header from "../components/Header";
+import toast from "react-hot-toast";
 
 const coverMessage =
   "Fashion isn't just clothes; it's a vibrant language. Silhouettes and textures speak volumes, a conversation starter with every bold print. It's a way to tell our story, a confidence booster, or a playful exploration. From elegance to rebellion, fashion lets us navigate the world in style.".split(
     " "
   );
 
-const data = {
-  products: [
-    {
-      _id: "1",
-      name: "Apple iPhone 14 Pro",
-      price: 999,
-      stock: 15,
-      photos: ["https://dummyimage.com/600x400/000/fff&text=iPhone+14+Pro"],
-    },
-    {
-      _id: "2",
-      name: "Samsung Galaxy S23 Ultra",
-      price: 1199,
-      stock: 8,
-      photos: ["https://dummyimage.com/600x400/000/fff&text=Galaxy+S23+Ultra"],
-    },
-    {
-      _id: "3",
-      name: "Sony WH-1000XM5 Headphones",
-      price: 349,
-      stock: 20,
-      photos: ["https://dummyimage.com/600x400/000/fff&text=Sony+WH-1000XM5"],
-    },
-    {
-      _id: "4",
-      name: "Dell XPS 15",
-      price: 1499,
-      stock: 10,
-      photos: ["https://dummyimage.com/600x400/000/fff&text=Dell+XPS+15"],
-    },
-    {
-      _id: "5",
-      name: "Apple MacBook Pro 16",
-      price: 2499,
-      stock: 5,
-      photos: ["https://dummyimage.com/600x400/000/fff&text=MacBook+Pro+16"],
-    },
-    {
-      _id: "6",
-      name: "Sony PlayStation 5",
-      price: 499,
-      stock: 12,
-      photos: ["https://dummyimage.com/600x400/000/fff&text=PlayStation+5"],
-    },
-  ],
-};
+// const data = {
+//   products: [
+//     {
+//       _id: "1",
+//       name: "Apple iPhone 14 Pro",
+//       price: 999,
+//       stock: 15,
+//       photos: ["https://dummyimage.com/600x400/000/fff&text=iPhone+14+Pro"],
+//     },
+//     {
+//       _id: "2",
+//       name: "Samsung Galaxy S23 Ultra",
+//       price: 1199,
+//       stock: 8,
+//       photos: ["https://dummyimage.com/600x400/000/fff&text=Galaxy+S23+Ultra"],
+//     },
+//     {
+//       _id: "3",
+//       name: "Sony WH-1000XM5 Headphones",
+//       price: 349,
+//       stock: 20,
+//       photos: ["https://dummyimage.com/600x400/000/fff&text=Sony+WH-1000XM5"],
+//     },
+//     {
+//       _id: "4",
+//       name: "Dell XPS 15",
+//       price: 1499,
+//       stock: 10,
+//       photos: ["https://dummyimage.com/600x400/000/fff&text=Dell+XPS+15"],
+//     },
+//     {
+//       _id: "5",
+//       name: "Apple MacBook Pro 16",
+//       price: 2499,
+//       stock: 5,
+//       photos: ["https://dummyimage.com/600x400/000/fff&text=MacBook+Pro+16"],
+//     },
+//     {
+//       _id: "6",
+//       name: "Sony PlayStation 5",
+//       price: 499,
+//       stock: 12,
+//       photos: ["https://dummyimage.com/600x400/000/fff&text=PlayStation+5"],
+//     },
+//   ],
+// };
 
 const clients = [
   {
@@ -183,9 +184,11 @@ const services = [
 ];
 
 const Home = () => {
-  const [isLoading, setIsLoading] = useState(false);
+  const { data, isLoading, isError } = useLatestProductsQuery("");
 
   const addToCartHandler = (cartItem: CartItem) => {};
+
+  if (isError) toast.error("Cannot fetch the products");
 
   return (
     <>

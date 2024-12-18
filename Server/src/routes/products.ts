@@ -17,7 +17,7 @@ const app = express.Router();
 app.post("/new", adminOnly, singleUpload, newProduct);
 app.get("/latest", getLatestProducts);
 app.get("/categories", getAllCategories);
-app.get("/admin-products", getAdminProducts);
+app.get("/admin-products",adminOnly, getAdminProducts);
 app.get("/all", getAllProducts);
 app
   .route("/:id")

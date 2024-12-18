@@ -42,3 +42,12 @@ export type OrderItemType = {
     _id: string;
   };
   
+  export type Product = {
+    name: string;
+    price: number;
+    stock: number;
+    category: string;
+    description: string;
+    photos: string;
+    _id: string;
+  };
