@@ -1,7 +1,10 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 
-import { lazy, Suspense } from "react";
+import { lazy, Suspense, useEffect } from "react";
 import Loader from "./components/loader";
+import { Toaster } from "react-hot-toast";
+import { onAuthStateChanged } from "firebase/auth";
+import { auth } from "../firebase";
 
 const Home = lazy(() => import("./pages/Home"));
 const Cart = lazy(() => import("./pages/cart"));
@@ -31,6 +34,16 @@ const Login = lazy(() => import("./pages/login"));
 const Orders = lazy(() => import("./pages/orders"));
 
 const App = () => {
+  useEffect(() => {
+    onAuthStateChanged(auth, (user) => {
+      if (user) {
+        console.log("User logged in");
+      } else {
+        console.log("Not logged in");
+      }
+    });
+  }, []);
+
   return (
     <Router>
       <Suspense fallback={<Loader />}>
@@ -67,6 +80,7 @@ const App = () => {
           <Route path="/admin/app/toss" element={<Toss />} />
         </Routes>
       </Suspense>
+      <Toaster position="bottom-center" />
     </Router>
   );
 };

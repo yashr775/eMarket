@@ -9,6 +9,7 @@ import dotenv from "dotenv"
 import { errorMiddleware } from "./middlewares/error.js";
 import NodeCache from "node-cache";
 import morgan from "morgan";
+import cors from "cors";
 
 dotenv.config({ path: ".env" });
 
@@ -17,6 +18,7 @@ const PORT = process.env.PORT || 3000
 const app = express();
 app.use(express.json());
 app.use(morgan("dev"));
+app.use(cors());
 
 connectDB(MONGOURL);
 
