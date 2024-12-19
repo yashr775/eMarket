@@ -3,51 +3,57 @@ import { useState } from "react";
 import { Skeleton } from "../components/loader";
 import ProductCard from "../components/product-card";
 import { CartItem } from "../types/types";
+import {
+  useCategoriesQuery,
+  useSearchProductsQuery,
+} from "../redux/api/productAPI";
+import toast from "react-hot-toast";
+import { CustomError } from "../types/api-types";
 
-const categoriesResponse = {
-  categories: ["electronics", "fashion", "home", "beauty", "sports"],
-};
+// const categoriesResponse = {
+//   categories: ["electronics", "fashion", "home", "beauty", "sports"],
+// };
 
-const searchedData = {
-  products: [
-    {
-      _id: "1",
-      name: "Smartphone",
-      price: 500,
-      stock: 20,
-      photos: [{ url: "https://via.placeholder.com/150", public_id: "image1" }],
-    },
-    {
-      _id: "2",
-      name: "Headphones",
-      price: 150,
-      stock: 15,
-      photos: ["https://via.placeholder.com/150"],
-    },
-    {
-      _id: "3",
-      name: "Blender",
-      price: 75,
-      stock: 10,
-      photos: ["https://via.placeholder.com/150"],
-    },
-    {
-      _id: "4",
-      name: "Running Shoes",
-      price: 100,
-      stock: 25,
-      photos: ["https://via.placeholder.com/150"],
-    },
-    {
-      _id: "5",
-      name: "Lipstick",
-      price: 20,
-      stock: 50,
-      photos: ["https://via.placeholder.com/150"],
-    },
-  ],
-  totalPage: 4,
-};
+// const searchedData = {
+//   products: [
+//     {
+//       _id: "1",
+//       name: "Smartphone",
+//       price: 500,
+//       stock: 20,
+//       photos: [{ url: "https://via.placeholder.com/150", public_id: "image1" }],
+//     },
+//     {
+//       _id: "2",
+//       name: "Headphones",
+//       price: 150,
+//       stock: 15,
+//       photos: ["https://via.placeholder.com/150"],
+//     },
+//     {
+//       _id: "3",
+//       name: "Blender",
+//       price: 75,
+//       stock: 10,
+//       photos: ["https://via.placeholder.com/150"],
+//     },
+//     {
+//       _id: "4",
+//       name: "Running Shoes",
+//       price: 100,
+//       stock: 25,
+//       photos: ["https://via.placeholder.com/150"],
+//     },
+//     {
+//       _id: "5",
+//       name: "Lipstick",
+//       price: 20,
+//       stock: 50,
+//       photos: ["https://via.placeholder.com/150"],
+//     },
+//   ],
+//   totalPage: 4,
+// };
 
 const search = () => {
   const [search, setSearch] = useState("");
@@ -56,6 +62,36 @@ const search = () => {
   const [category, setCategory] = useState("");
   const [page, setPage] = useState(1);
 
+  const {
+    data: categoriesResponse,
+    isLoading: loadingCategories,
+    isError,
+    error,
+  } = useCategoriesQuery();
+
+  if (isError) {
+    const err = error as CustomError;
+    toast.error(err.data.message);
+  }
+
+  const {
+    isLoading: productLoading,
+    data: searchedData,
+    isError: productIsError,
+    error: productError,
+  } = useSearchProductsQuery({
+    search,
+    sort,
+    category,
+    page,
+    price: maxPrice,
+  });
+
+  if (productIsError) {
+    const err = productError as CustomError;
+    toast.error(err.data.message);
+  }
+
   const addToCartHandler = (cartItem: CartItem) => {
     console.log(cartItem);
     return "dfdsffsdf";
@@ -63,9 +99,6 @@ const search = () => {
 
   const isPrevPage = page > 1;
   const isNextPage = page < 4;
-
-  const productLoading = false;
-  const loadingCategories = false;
 
   return (
     <div className="product-search-page">

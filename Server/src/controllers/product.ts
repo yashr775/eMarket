@@ -18,7 +18,6 @@ const newProduct = TryCatch(
     const photo = req.file;
 
     if (!photo) next(new ErrorHandler("Please add photo", 400));
-
     if (!name || !price || !stock || !category || !description) {
       if (photo?.path)
         rm(photo?.path, () => {
