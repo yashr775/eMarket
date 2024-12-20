@@ -13,18 +13,21 @@ export const productAPI = createApi({
   baseQuery: fetchBaseQuery({
     baseUrl: `${import.meta.env.VITE_SERVER}/api/v1/product/`,
   }),
-  tagTypes: ["latest-product", "all-product"],
+  tagTypes: ["product"],
   endpoints: (builder) => ({
     latestProducts: builder.query<AllProductsResponse, void>({
       query: () => "latest",
+      providesTags: ["product"],
     }),
 
     allProducts: builder.query<AllProductsResponse, string>({
       query: (id) => `admin-products?id=${id}`,
+      providesTags: ["product"],
     }),
 
     categories: builder.query<CategoriesResponse, void>({
       query: () => "categories",
+      providesTags: ["product"],
     }),
 
     searchProducts: builder.query<
@@ -48,6 +51,7 @@ export const productAPI = createApi({
         method: "POST",
         body: formData,
       }),
+      invalidatesTags: ["product"],
     }),
   }),
 });

@@ -34,7 +34,7 @@ const newProduct = TryCatch(
       photos: photo?.path,
       description,
     });
-
+invalidateCache({product:true})
     return res
       .status(201)
       .json({ success: true, message: "Product is created" });
@@ -57,6 +57,7 @@ const getLatestProducts = TryCatch(async (req, res, next) => {
 
 const getAllCategories = TryCatch(async (req, res, next) => {
   let categories;
+ 
 
   if (myCache.has("categories"))
     categories = JSON.parse(myCache.get("categories")!);
@@ -65,6 +66,7 @@ const getAllCategories = TryCatch(async (req, res, next) => {
     myCache.set("categories", JSON.stringify(categories));
   }
 
+  invalidateCache({product:true})
   return res.status(200).json({ message: "List of Categories", categories });
 });
 

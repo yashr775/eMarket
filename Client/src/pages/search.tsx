@@ -68,6 +68,7 @@ const search = () => {
     isError,
     error,
   } = useCategoriesQuery();
+  console.log(categoriesResponse?.categories);
 
   if (isError) {
     const err = error as CustomError;
