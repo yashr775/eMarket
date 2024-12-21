@@ -51,3 +51,12 @@ export type OrderItemType = {
     photos: string;
     _id: string;
   };
+
+  export type ShippingInfo = {
+    address: string;
+    city: string;
+    state: string;
+    country: string;
+    pinCode: string;
+  };
+  
