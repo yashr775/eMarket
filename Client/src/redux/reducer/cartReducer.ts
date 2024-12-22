@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { CartReducerInitialState } from "../../types/reducer-types";
 import { CartItem } from "../../types/types";
@@ -20,7 +19,15 @@ export const cartReducer = createSlice({
   reducers: {
     addToCart: (state, action: PayloadAction<CartItem>) => {
       state.loading = true;
+
+      const index = state.cartItems.findIndex(
+        (i) => i.productId === action.payload.productId
+      );
+
+      if (index !== -1) state.cartItems[index] = action.payload;
+      else
       state.cartItems.push(action.payload);
+
       state.loading = false;
     },
     removeCartItem: (state, action: PayloadAction<string>) => {
@@ -30,7 +37,20 @@ export const cartReducer = createSlice({
       );
       state.loading = false;
     },
+    
+    calculatePrice: (state) => {
+      const subtotal = state.cartItems.reduce(
+        (total, item) => total + item.price * item.quantity,
+        0
+      );
+
+      state.subtotal = subtotal;
+      state.shippingCharges = state.subtotal > 1000 ? 0 : 200;
+      state.tax = Math.round(state.subtotal * 0.18);
+      state.total =
+        state.subtotal + state.tax + state.shippingCharges - state.discount;
+    },
   },
 });
 
-export const { addToCart, removeCartItem } = cartReducer.actions;
+export const { addToCart, removeCartItem,calculatePrice } = cartReducer.actions;

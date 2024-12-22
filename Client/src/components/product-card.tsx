@@ -6,10 +6,7 @@ import { server } from "../redux/store";
 
 type ProductsProps = {
   productId: string;
-  photos: {
-    url: string;
-    public_id: string;
-  }[];
+  photos: string;
   name: string;
   price: number;
   stock: number;
@@ -37,7 +34,7 @@ const ProductCard = ({
               productId,
               price,
               name,
-              photo: photos[0].url,
+              photo: photos,
               stock,
               quantity: 1,
             })

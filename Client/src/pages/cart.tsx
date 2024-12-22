@@ -1,65 +1,51 @@
 /* eslint-disable react-hooks/rules-of-hooks */
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import CartItemCard from "../components/card-item";
 import { VscError } from "react-icons/vsc";
 import { Link } from "react-router-dom";
-
-const cartItems = [
-  {
-    productId: "1",
-    name: "Wireless Mouse",
-    price: 899,
-    quantity: 2,
-    stock: 10,
-    photo: "/assets/images/wireless-mouse.jpg",
-    description: "A sleek and ergonomic wireless mouse for everyday use.",
-  },
-  {
-    productId: "2",
-    name: "Mechanical Keyboard",
-    price: 4999,
-    quantity: 1,
-    stock: 10,
-    photo: "/assets/images/mechanical-keyboard.jpg",
-    description: "A high-quality mechanical keyboard with customizable keys.",
-  },
-  {
-    productId: "3",
-    name: "Gaming Headset",
-    price: 2999,
-    quantity: 1,
-    stock: 10,
-    photo: "/assets/images/gaming-headset.jpg",
-    description: "Immersive sound and comfort for long gaming sessions.",
-  },
-  {
-    productId: "4",
-    name: "Smartwatch",
-    price: 6999,
-    quantity: 1,
-    stock: 10,
-    photo: "/assets/images/smartwatch.jpg",
-    description: "A modern smartwatch with fitness tracking and notifications.",
-  },
-];
+import { useDispatch, useSelector } from "react-redux";
+import { CartReducerInitialState } from "../types/reducer-types";
+import { CartItem } from "../types/types";
+import {
+  addToCart,
+  calculatePrice,
+  removeCartItem,
+} from "../redux/reducer/cartReducer";
+import toast from "react-hot-toast";
 
 const cart = () => {
-  const incrementHandler = () => {};
-  const decrementHandler = () => {};
-  const removeHandler = () => {};
+  const {
+    cartItems,
+    discount,
+    shippingCharges,
+    subtotal,
+    tax,
+    total,
+    loading,
+  } = useSelector(
+    (state: { cartReducer: CartReducerInitialState }) => state.cartReducer
+  );
+
+  const dispatch = useDispatch();
+
+  const incrementHandler = (cartItem: CartItem) => {
+    dispatch(addToCart({ ...cartItem, quantity: cartItem.quantity + 1 }));
+    toast.success("Added to cart");
+  };
+  const decrementHandler = (cartItem: CartItem) => {
+    dispatch(addToCart({ ...cartItem, quantity: cartItem.quantity - 1 }));
+  };
+  const removeHandler = (productId: string) => {
+    dispatch(removeCartItem(productId));
+  };
 
   const [couponCode, setCouponCode] = useState("");
   const isValidCouponCode = true;
+  console.log(cartItems);
 
-  // Replace after backend
-  const subtotal = cartItems.reduce(
-    (acc, item) => acc + item.price * item.quantity,
-    0
-  );
-  const shippingCharges = 50; // Fixed shipping charges
-  const tax = Math.round(subtotal * 0.18); // 18% tax
-  const discount = isValidCouponCode ? 100 : 0; // Flat ₹100 discount if coupon is valid
-  const total = subtotal + shippingCharges + tax - discount;
+  useEffect(() => {
+    dispatch(calculatePrice());
+  }, [cartItems]);
 
   return (
     <div>

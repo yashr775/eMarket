@@ -1,7 +1,5 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 import { Slider } from "6pp";
 import { motion } from "framer-motion";
-import { useState } from "react";
 import { FaAnglesDown, FaHeadset } from "react-icons/fa6";
 import { LuShieldCheck } from "react-icons/lu";
 import { TbTruckDelivery } from "react-icons/tb";
@@ -12,6 +10,8 @@ import ProductCard from "../components/product-card";
 import { useLatestProductsQuery } from "../redux/api/productAPI";
 import { CartItem } from "../types/types";
 import toast from "react-hot-toast";
+import { useDispatch } from "react-redux";
+import { addToCart } from "../redux/reducer/cartReducer";
 
 const coverMessage =
   "Fashion isn't just clothes; it's a vibrant language. Silhouettes and textures speak volumes, a conversation starter with every bold print. It's a way to tell our story, a confidence booster, or a playful exploration. From elegance to rebellion, fashion lets us navigate the world in style.".split(
@@ -184,9 +184,15 @@ const services = [
 ];
 
 const Home = () => {
-  const { data, isLoading, isError } = useLatestProductsQuery("");
-
-  const addToCartHandler = (cartItem: CartItem) => {};
+  const { data, isLoading, isError } = useLatestProductsQuery();
+  const dispatch = useDispatch();
+  const addToCartHandler = (cartItem: CartItem) => {
+    if (cartItem.stock < 1) {
+      return toast.error("Out of stock");
+    }
+    dispatch(addToCart(cartItem));
+    toast.success("Added to cart");
+  };
 
   if (isError) toast.error("Cannot fetch the products");
 
