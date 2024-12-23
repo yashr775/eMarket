@@ -9,51 +9,8 @@ import {
 } from "../redux/api/productAPI";
 import toast from "react-hot-toast";
 import { CustomError } from "../types/api-types";
-
-// const categoriesResponse = {
-//   categories: ["electronics", "fashion", "home", "beauty", "sports"],
-// };
-
-// const searchedData = {
-//   products: [
-//     {
-//       _id: "1",
-//       name: "Smartphone",
-//       price: 500,
-//       stock: 20,
-//       photos: [{ url: "https://via.placeholder.com/150", public_id: "image1" }],
-//     },
-//     {
-//       _id: "2",
-//       name: "Headphones",
-//       price: 150,
-//       stock: 15,
-//       photos: ["https://via.placeholder.com/150"],
-//     },
-//     {
-//       _id: "3",
-//       name: "Blender",
-//       price: 75,
-//       stock: 10,
-//       photos: ["https://via.placeholder.com/150"],
-//     },
-//     {
-//       _id: "4",
-//       name: "Running Shoes",
-//       price: 100,
-//       stock: 25,
-//       photos: ["https://via.placeholder.com/150"],
-//     },
-//     {
-//       _id: "5",
-//       name: "Lipstick",
-//       price: 20,
-//       stock: 50,
-//       photos: ["https://via.placeholder.com/150"],
-//     },
-//   ],
-//   totalPage: 4,
-// };
+import { useDispatch } from "react-redux";
+import { addToCart } from "../redux/reducer/cartReducer";
 
 const search = () => {
   const [search, setSearch] = useState("");
@@ -61,6 +18,7 @@ const search = () => {
   const [maxPrice, setMaxPrice] = useState(100000);
   const [category, setCategory] = useState("");
   const [page, setPage] = useState(1);
+  const dispatch = useDispatch();
 
   const {
     data: categoriesResponse,
@@ -94,8 +52,8 @@ const search = () => {
   }
 
   const addToCartHandler = (cartItem: CartItem) => {
-    console.log(cartItem);
-    return "dfdsffsdf";
+    dispatch(addToCart(cartItem));
+    toast.success("Item added successfully");
   };
 
   const isPrevPage = page > 1;
