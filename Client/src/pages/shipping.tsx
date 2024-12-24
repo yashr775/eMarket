@@ -13,7 +13,12 @@ const shipping = () => {
     (state: { cartReducer: CartReducerInitialState }) => state.cartReducer
   );
 
-  const changeHandler = () => {};
+  const changeHandler = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
+  ) => {
+    const { name, value } = e.target;
+    setShippingInfo((prev) => ({ ...prev, [name]: value }));
+  };
   const submitHandler = () => {};
   const [shippingInfo, setShippingInfo] = useState({
     address: "",

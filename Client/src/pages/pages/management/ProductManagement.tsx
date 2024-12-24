@@ -3,7 +3,7 @@ import { useState, ChangeEvent, FormEvent, useEffect } from "react";
 import AdminSidebar from "../../../components/admin/AdminSidebar";
 import { useSelector } from "react-redux";
 import { UserReducerInitialState } from "../../../types/reducer-types";
-import { useNavigate, useParams } from "react-router-dom";
+import { Navigate, useNavigate, useParams } from "react-router-dom";
 import {
   useDeleteProductMutation,
   useProductDetailsQuery,
@@ -22,7 +22,7 @@ const ProductManagement = () => {
   const params = useParams();
   const navigate = useNavigate();
 
-  const { data, isLoading } = useProductDetailsQuery(params.id!);
+  const { data, isLoading, isError } = useProductDetailsQuery(params.id!);
 
   const [product, setProduct] = useState({
     _id: "",
@@ -108,6 +108,7 @@ const ProductManagement = () => {
     }
   }, [data]);
 
+  if (isError) return <Navigate to={"/404"} />;
   return (
     <div className="admin-container">
       <AdminSidebar />

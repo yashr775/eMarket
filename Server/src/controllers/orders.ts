@@ -18,7 +18,6 @@ const newOrder = TryCatch(
       discount,
       total,
     } = req.body;
-
     if (!shippingInfo || !orderItems || !user || !subtotal || !tax || !total)
       return next(new ErrorHandler("Please Enter All Fields", 400));
 
@@ -70,7 +69,6 @@ const allOrders = TryCatch(async (req, res, next) => {
   const key = "all-orders";
 
   let orders = [];
-
   if (myCache.has(key)) {
     orders = JSON.parse(myCache.get(key)!);
   } else {
@@ -79,7 +77,6 @@ const allOrders = TryCatch(async (req, res, next) => {
   }
 
   await invalidateCache({ product: true, order: true, admin: true });
-
   return res.status(200).json({ success: true, orders });
 });
 
