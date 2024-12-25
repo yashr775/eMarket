@@ -37,6 +37,7 @@ const Coupon = lazy(() => import("./pages/pages/apps/Coupon"));
 const Shipping = lazy(() => import("./pages/shipping"));
 const Login = lazy(() => import("./pages/login"));
 const Orders = lazy(() => import("./pages/orders"));
+const NotFound = lazy(() => import("./pages/not-found"));
 
 const App = () => {
   const { user, loading } = useSelector(
@@ -50,7 +51,6 @@ const App = () => {
       if (user) {
         const data = await getUser(user.uid);
         dispatch(userExist(data.user));
-        console.log("User logged in");
       } else {
         dispatch(userNotExist());
       }
@@ -119,6 +119,7 @@ const App = () => {
             <Route path="/admin/app/coupon" element={<Coupon />} />
             <Route path="/admin/app/toss" element={<Toss />} />
           </Route>
+          <Route path="*" element={<NotFound />} />
         </Routes>
       </Suspense>
       <Toaster position="bottom-center" />
