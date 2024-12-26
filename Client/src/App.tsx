@@ -10,6 +10,7 @@ import { userExist, userNotExist } from "./redux/reducer/userReducer";
 import { getUser } from "./redux/api/userAPI";
 import { UserReducerInitialState } from "./types/reducer-types";
 import ProtectedRoute from "./components/protected-route";
+const Checkout = lazy(() => import("./pages/checkout"));
 
 const Home = lazy(() => import("./pages/Home"));
 const Cart = lazy(() => import("./pages/cart"));
@@ -87,6 +88,7 @@ const App = () => {
             {" "}
             <Route path="/orders" element={<Orders />} />
             <Route path={"/shipping"} element={<Shipping />}></Route>
+            <Route path="/pay" element={<Checkout />} />
           </Route>
 
           {/* Admin Route */}

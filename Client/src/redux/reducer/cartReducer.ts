@@ -53,7 +53,8 @@ export const cartReducer = createSlice({
     discountApplied: (state, action: PayloadAction<number>) => {
       state.discount = action.payload;
     },
+    resetCart: () => initialState,
   },
 });
 
-export const { addToCart, removeCartItem,calculatePrice,discountApplied } = cartReducer.actions;
+export const { addToCart, removeCartItem,calculatePrice,discountApplied,resetCart } = cartReducer.actions;

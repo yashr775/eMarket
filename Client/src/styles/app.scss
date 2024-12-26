@@ -47,6 +47,35 @@ a {
 .green {
   color: rgb(0, 195, 0);
 }
+.not-found {
+  height: 80vh;
+  @include mixin.flex(column);
+  > svg {
+    font-size: 5rem;
+  }
+}
+
+.checkout-container {
+  height: 80vh;
+  width: 100%;
+  margin: auto;
+  @include mixin.flex;
+
+  > form {
+    @include mixin.flex(column, flex-start, stretch, 2rem);
+    max-width: 400px;
+    box-shadow: 0 0 10px rgb(0 0 0 / 10%);
+    padding: 4rem;
+    border-radius: 6px;
+    > button {
+      @include mixin.btn(1rem, $color3, $color1);
+      width: 100%;
+      font-size: 1.1rem;
+    }
+  }
+}
+
+
 .admin-container {
   @include mixin.grid(1fr 4fr, 2rem);
   height: 100vh;
