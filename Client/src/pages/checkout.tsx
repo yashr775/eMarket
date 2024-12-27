@@ -1,5 +1,4 @@
 /* eslint-disable @typescript-eslint/no-non-null-asserted-optional-chain */
-import { RootState } from "@reduxjs/toolkit/query";
 import {
   Elements,
   PaymentElement,
@@ -7,16 +6,18 @@ import {
   useStripe,
 } from "@stripe/react-stripe-js";
 import { loadStripe } from "@stripe/stripe-js";
-import { useState, FormEvent } from "react";
+import { FormEvent, useState } from "react";
 import toast from "react-hot-toast";
-import { useDispatch, useSelector } from "react-redux";
-import { Navigate, useLocation, useNavigate } from "react-router-dom";
-import { useNewOrderMutation } from "../redux/api/orderAPI";
+import { resetCart } from "../redux/reducer/cartReducer";
 import { NewOrderRequest } from "../types/api-types";
 import { responseToast } from "../utils/features";
-import { resetCart } from "../redux/reducer/cartReducer";
-const stripeKey =
-  "pk_test_51QWeBNBspqeRPsCYygPNSGqjmt5Z3l5cPFEah7E1bONW7ba73zjPy9heXjl1pU7fBymppoP33IZZjFl6iJ7c8rWx00iaILyewY";
+import { useNewOrderMutation } from "../redux/api/orderAPI";
+import { useDispatch, useSelector } from "react-redux";
+import { Navigate, useLocation, useNavigate } from "react-router-dom";
+import { RootState } from "../redux/store";
+const stripeKey = import.meta.env.VITE_STRIPE_KEY;
+
+const stripePromise = loadStripe(stripeKey);
 
 const CheckOutForm = () => {
   const stripe = useStripe();
@@ -42,7 +43,6 @@ const CheckOutForm = () => {
 
   const submitHandler = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-
     if (!stripe || !elements) return;
     setIsProcessing(true);
 
@@ -75,9 +75,11 @@ const CheckOutForm = () => {
     }
     setIsProcessing(false);
   };
+
   return (
     <div className="checkout-container">
       <form onSubmit={submitHandler}>
+        {" "}
         <PaymentElement />
         <button type="submit" disabled={isProcessing}>
           {isProcessing ? "Processing..." : "Pay"}
@@ -87,14 +89,12 @@ const CheckOutForm = () => {
   );
 };
 
-const stripePromise = loadStripe(stripeKey);
 const Checkout = () => {
   const location = useLocation();
 
   const clientSecret: string | undefined = location.state;
 
   if (!clientSecret) return <Navigate to={"/shipping"} />;
-
   return (
     <Elements
       options={{
@@ -102,6 +102,7 @@ const Checkout = () => {
       }}
       stripe={stripePromise}
     >
+      {" "}
       <CheckOutForm />
     </Elements>
   );

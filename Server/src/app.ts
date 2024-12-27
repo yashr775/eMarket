@@ -10,15 +10,19 @@ import { errorMiddleware } from "./middlewares/error.js";
 import NodeCache from "node-cache";
 import morgan from "morgan";
 import cors from "cors";
+import Stripe from "stripe";
 
 dotenv.config({ path: ".env" });
 
 const MONGOURL = process.env.MONGO_URL || "fvgfdgfd";
+const stripeKey = process.env.STRIPE_KEY || "";
 const PORT = process.env.PORT || 3000
 const app = express();
 app.use(express.json());
 app.use(morgan("dev"));
 app.use(cors());
+
+export const stripe = new Stripe(stripeKey)
 
 connectDB(MONGOURL);
 

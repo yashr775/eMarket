@@ -1,25 +1,24 @@
 /* eslint-disable react-hooks/rules-of-hooks */
-/* eslint-disable @typescript-eslint/no-unused-vars */
-import React, { useEffect, useState } from "react";
+import React, { FormEvent, useState } from "react";
 import { BiArrowBack } from "react-icons/bi";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { CartReducerInitialState } from "../types/reducer-types";
+import axios from "axios";
+import toast from "react-hot-toast";
+import { server } from "../redux/store";
+import { saveShippingInfo } from "../redux/reducer/cartReducer";
 
 const shipping = () => {
   const navigate = useNavigate();
 
-  const { cartItems } = useSelector(
+  const { total } = useSelector(
     (state: { cartReducer: CartReducerInitialState }) => state.cartReducer
   );
+  // const { user } = useSelector((state: RootState) => state.userReducer);
 
-  const changeHandler = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
-  ) => {
-    const { name, value } = e.target;
-    setShippingInfo((prev) => ({ ...prev, [name]: value }));
-  };
-  const submitHandler = () => {};
+  const dispatch = useDispatch();
+
   const [shippingInfo, setShippingInfo] = useState({
     address: "",
     city: "",
@@ -28,9 +27,43 @@ const shipping = () => {
     pinCode: "",
   });
 
-  useEffect(() => {
-    if (cartItems.length <= 0) return navigate("/cart");
-  }, [cartItems]);
+  const changeHandler = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
+  ) => {
+    const { name, value } = e.target;
+    setShippingInfo((prev) => ({ ...prev, [name]: value }));
+  };
+
+  const submitHandler = async (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+
+    dispatch(saveShippingInfo(shippingInfo));
+
+    try {
+      const { data } = await axios.post(
+        `${server}/api/v1/payment/create`,
+        {
+          amount: total,
+        },
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+      console.log(data);
+      navigate("/pay", {
+        state: data.clientSecret,
+      });
+    } catch (error) {
+      console.log(error);
+      toast.error("Something went wrong");
+    }
+  };
+
+  // useEffect(() => {
+  //   if (cartItems.length <= 0) return navigate("/cart");
+  // }, [cartItems]);
 
   return (
     <div className="shipping">
