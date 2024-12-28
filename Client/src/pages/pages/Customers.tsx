@@ -11,7 +11,7 @@ import {
   useAllUsersQuery,
   useDeleteUserMutation,
 } from "../../redux/api/userAPI";
-import { RootState, server } from "../../redux/store";
+import { RootState } from "../../redux/store";
 import { CustomError } from "../../types/api-types";
 import { responseToast } from "../../utils/features";
 

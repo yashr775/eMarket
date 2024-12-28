@@ -15,7 +15,8 @@ import { useNewOrderMutation } from "../redux/api/orderAPI";
 import { useDispatch, useSelector } from "react-redux";
 import { Navigate, useLocation, useNavigate } from "react-router-dom";
 import { RootState } from "../redux/store";
-const stripeKey = import.meta.env.VITE_STRIPE_KEY;
+const stripeKey =
+  "pk_test_51QWeBNBspqeRPsCYygPNSGqjmt5Z3l5cPFEah7E1bONW7ba73zjPy9heXjl1pU7fBymppoP33IZZjFl6iJ7c8rWx00iaILyewY";
 
 const stripePromise = loadStripe(stripeKey);
 
@@ -93,6 +94,7 @@ const Checkout = () => {
   const location = useLocation();
 
   const clientSecret: string | undefined = location.state;
+  console.log(clientSecret);
 
   if (!clientSecret) return <Navigate to={"/shipping"} />;
   return (

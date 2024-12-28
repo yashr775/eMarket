@@ -51,7 +51,6 @@ const shipping = () => {
           },
         }
       );
-      console.log(data);
       navigate("/pay", {
         state: data.clientSecret,
       });
