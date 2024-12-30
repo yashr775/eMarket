@@ -25,3 +25,16 @@ Shipping Page
 Payment Page
 
 ![PaymentPage](https://github.com/user-attachments/assets/f1212040-b860-49c4-9d73-9826e37e707e)
+
+Environment variables 
+
+MONGO_URL,
+PORT,
+PRODUCT_PER_PAGE ,
+STRIPE_KEY 
+
+
+
+
+
+
