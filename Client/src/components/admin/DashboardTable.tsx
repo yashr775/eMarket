@@ -2,7 +2,7 @@ import { Column } from "react-table";
 import TableHOC from "./TableHOC.tsx";
 
 interface DataType {
-  id: string;
+  id?: string;
   quantity: number;
   discount: number;
   amount: number;

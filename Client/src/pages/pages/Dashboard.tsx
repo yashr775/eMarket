@@ -24,6 +24,7 @@ const Dashboard = () => {
   const { isLoading, data, isError } = useStatsQuery(user?._id!);
 
   const stats = data?.stats!;
+  console.log(stats);
 
   if (isError) return <Navigate to={"/"} />;
 
