@@ -21,7 +21,7 @@ const app = express();
 app.use(express.json());
 app.use(morgan("dev"));
 app.use(cors());
-
+console.log(MONGOURL)
 export const stripe = new Stripe(stripeKey)
 
 connectDB(MONGOURL);

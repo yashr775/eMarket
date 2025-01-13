@@ -25,7 +25,7 @@ const createPaymentIntent = TryCatch(async (req, res, next) => {
 const newCoupon = TryCatch(async (req, res, next) => {
   const { code, amount } = req.body;
 
-  if (!code || !amount)
+  if ( !amount)
     return next(new ErrorHandler("Please enter both coupon and amount", 400));
 
   await Coupon.create({ code, amount });
