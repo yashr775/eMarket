@@ -1,11 +1,10 @@
 import dotenv from "dotenv";
-import mongoose,{Document} from "mongoose";
+import mongoose, { Document } from "mongoose";
 import { InvalidateCacheProps, OrderItemType } from "../types/types.js";
 import { myCache } from "../app.js";
 import { Product } from "../models/product.js";
 import { Order } from "../models/order.js";
-import {v2 as cloudinary, UploadApiResponse} from "cloudinary";
-
+import { v2 as cloudinary, UploadApiResponse } from "cloudinary";
 
 const getBase64 = (file: Express.Multer.File) =>
   `data:${file.mimetype};base64,${file.buffer.toString("base64")}`;
@@ -90,7 +89,6 @@ export const reduceStock = async (orderItems: OrderItemType[]) => {
     await product.save();
   }
 };
-
 
 export const calculatePercentage = (thisMonth: number, lastMonth: number) => {
   if (lastMonth === 0) return thisMonth * 100;

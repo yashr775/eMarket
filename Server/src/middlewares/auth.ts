@@ -4,7 +4,6 @@ import { TryCatch } from "./error.js";
 
 export const adminOnly = TryCatch(async (req, res, next) => {
   const { id } = req.query;
-console.log(id)
   if (!id) return next(new ErrorHandler("Admin Only", 401));
 
   const user = await User.findById(id);
