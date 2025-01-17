@@ -10,7 +10,7 @@ const newUser = TryCatch(
     res: Response,
     next: NextFunction
   ) => {
-    const { name, email, photo, gender, _id, dob, } = req.body;
+    const { name, email, photo  , gender, _id, dob, } = req.body;
 
     let user = await User.findById(_id);
     if (user)
