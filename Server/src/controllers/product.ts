@@ -9,7 +9,7 @@ import { Product } from "../models/product.js";
 import ErrorHandler from "../utils/utility-class.js";
 import { rm } from "fs";
 import { myCache } from "../app.js";
-import { invalidateCache, uploadToCloudinary } from "../utils/features.js";
+import { deleteFromCloudinary, invalidateCache, uploadToCloudinary } from "../utils/features.js";
 // import { faker } from "@faker-js/faker";
 
 const newProduct = TryCatch(
@@ -149,11 +149,12 @@ const deleteProduct = TryCatch(async (req, res, next) => {
 
   if (!product) return next(new ErrorHandler("Product Not Found", 404));
 
-  rm(product.photos!, () => {
-    console.log("Product photo deleted");
-  });
+  const ids = product.photos.map((photo) => photo.public_id);
+
+  await deleteFromCloudinary(ids);
 
   await product.deleteOne();
+
   invalidateCache({ product: true, productId: String(product._id) });
   return res.status(200).json({
     success: true,
