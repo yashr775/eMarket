@@ -14,10 +14,11 @@ const NewProduct = () => {
   );
 
   const [newProduct] = useNewProductMutation();
+  const [isLoading, setIsLoading] = useState<boolean>(false);
 
   const [name, setName] = useState<string>("");
   const [price, setPrice] = useState<number>();
-  const [stock, setStock] = useState<number>();
+  const [stock, setStock] = useState<number>(1);
   const [category, setCategory] = useState<string>("");
   const [description, setDesciption] = useState<string>("");
   const navigate = useNavigate();
@@ -26,26 +27,33 @@ const NewProduct = () => {
 
   const submitHandler = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    setIsLoading(true);
+    try {
+      if (!name || !price || stock < 0 || !category) return;
 
-    if (!name || !price || !stock || !category) return;
+      if (!photos.file || photos.file.length === 0) return;
 
-    if (!photos.file || photos.file.length === 0) return;
+      const formData = new FormData();
 
-    const formData = new FormData();
-    formData.set("name", name);
-    formData.set("price", price.toString());
-    formData.set("stock", stock.toString());
+      formData.set("name", name);
+      formData.set("description", description);
+      formData.set("price", price.toString());
+      formData.set("stock", stock.toString());
 
-    formData.set("category", category);
-    formData.set("description", description);
+      formData.set("category", category);
 
-    photos.file.forEach((file) => {
-      formData.append("photos", file);
-    });
+      photos.file.forEach((file) => {
+        formData.append("photos", file);
+      });
 
-    const res = await newProduct({ id: user?._id!, formData });
-    console.log(res);
-    responseToast(res, navigate, "/admin/product");
+      const res = await newProduct({ id: user?._id!, formData });
+
+      responseToast(res, navigate, "/admin/product");
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
@@ -121,7 +129,9 @@ const NewProduct = () => {
               photos.preview.map((img, i) => (
                 <img key={i} src={img} alt="New Image" />
               ))}
-            <button type="submit">Create</button>
+            <button disabled={isLoading} type="submit">
+              Create
+            </button>
           </form>
         </article>
       </main>
