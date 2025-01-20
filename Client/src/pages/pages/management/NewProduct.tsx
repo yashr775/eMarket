@@ -118,6 +118,7 @@ const NewProduct = () => {
               <input
                 required
                 type="file"
+                accept="/image/*"
                 multiple
                 onChange={photos.changeHandler}
               />

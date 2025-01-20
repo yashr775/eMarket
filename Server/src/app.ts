@@ -31,7 +31,6 @@ cloudinary.config({
   api_secret: process.env.CLOUD_API_SECRET,
 });
 export const myCache = new NodeCache();
-
 app.get("/", (req, res) => {
   res.status(200).send("App working");
 });
