@@ -22,7 +22,7 @@ app.get("/all", getAllProducts);
 app
   .route("/:id")
   .get(getSingleProduct)
-  .put(singleUpload, updateProduct)
+  .put(multiUpload, updateProduct)
   .delete(deleteProduct);
 
 export default app;

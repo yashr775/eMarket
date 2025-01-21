@@ -49,7 +49,6 @@ const getAllUsers = TryCatch(async (req, res, next) => {
 const getUser = TryCatch(async (req, res, next) => {
   const id = req.params.id;
   const user = await User.findById(id);
-console.log(user)
   if (!user) return next(new ErrorHandler("Invalid Id", 400));
 
   return res.status(200).json({

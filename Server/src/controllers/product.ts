@@ -7,7 +7,6 @@ import {
 } from "../types/types.js";
 import { Product } from "../models/product.js";
 import ErrorHandler from "../utils/utility-class.js";
-import { rm } from "fs";
 import { myCache } from "../app.js";
 import { deleteFromCloudinary, invalidateCache, uploadToCloudinary } from "../utils/features.js";
 // import { faker } from "@faker-js/faker";
@@ -110,20 +109,23 @@ const getSingleProduct = TryCatch(async (req, res, next) => {
   });
 });
 
-const updateProduct = TryCatch(async (req, res, next) => {
+ const updateProduct = TryCatch(async (req, res, next) => {
   const { id } = req.params;
   const { name, price, stock, category, description } = req.body;
-  const photos = req.file;
+  const photos = req.files as Express.Multer.File[] | undefined;
 
   const product = await Product.findById(id);
 
   if (!product) return next(new ErrorHandler("Product Not Found", 404));
 
-  if (photos) {
-    rm(product.photos!, () => {
-      console.log("old photo deleted");
-    });
-    product.photos = photos.path;
+  if (photos && photos.length > 0) {
+    const photosURL = await uploadToCloudinary(photos);
+
+    const ids = product.photos.map((photo) => photo.public_id);
+
+    await deleteFromCloudinary(ids);
+
+    product.photos = photosURL;
   }
 
   if (name) product.name = name;
@@ -132,9 +134,13 @@ const updateProduct = TryCatch(async (req, res, next) => {
   if (category) product.category = category;
   if (description) product.description = description;
 
-  invalidateCache({product:true,productId:String(product._id)})
-
   await product.save();
+
+  await invalidateCache({
+    product: true,
+    productId: String(product._id),
+    admin: true,
+  });
 
   return res.status(200).json({
     success: true,
