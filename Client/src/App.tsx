@@ -38,6 +38,7 @@ const Coupon = lazy(() => import("./pages/pages/apps/Coupon"));
 const Shipping = lazy(() => import("./pages/shipping"));
 const Login = lazy(() => import("./pages/login"));
 const Orders = lazy(() => import("./pages/orders"));
+const ProductDetails = lazy(() => import("./pages/product-details"));
 const NotFound = lazy(() => import("./pages/not-found"));
 
 const App = () => {
@@ -67,6 +68,7 @@ const App = () => {
         <Routes>
           <Route path={"/"} element={<Home />}></Route>
           <Route path={"/search"} element={<Search />}></Route>
+          <Route path="/product/:id" element={<ProductDetails />} />
           <Route path={"/cart"} element={<Cart />}></Route>
           <Route
             path={"/login"}
