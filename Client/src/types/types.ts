@@ -85,6 +85,18 @@ export type OrderItemType = {
     _id: string;
   };
 
+  export type Review = {
+    rating: number;
+    comment: string;
+    product: string;
+    user: {
+      name: string;
+      photo: string;
+      _id: string;
+    };
+    _id: string;
+  };
+
   export type ShippingInfo = {
     address: string;
     city: string;

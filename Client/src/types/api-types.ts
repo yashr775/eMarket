@@ -1,4 +1,4 @@
-import { Bar, CartItem, Line, Order, Pie, Product, ShippingInfo, Stats, User } from "./types";
+import { Bar, CartItem, Line, Order, Pie, Product, Review, ShippingInfo, Stats, User } from "./types";
 
 export type CustomError = {
   status: number;
@@ -21,6 +21,23 @@ export type UserResponse = {
 export type AllUsersResponse = {
   success: boolean;
   users: User[];
+};
+
+export type NewReviewRequest = {
+  rating: number;
+  comment: string;
+  userId?: string;
+  productId: string;
+};
+
+export type DeleteReviewRequest = {
+  userId?: string;
+  reviewId: string;
+};
+
+export type AllReviewsResponse = {
+  success: boolean;
+  reviews: Review[];
 };
 
 
