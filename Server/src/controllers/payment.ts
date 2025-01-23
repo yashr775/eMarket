@@ -24,12 +24,10 @@ const createPaymentIntent = TryCatch(async (req, res, next) => {
 
 const newCoupon = TryCatch(async (req, res, next) => {
   const { code, amount } = req.body;
-
-  if ( !amount)
+  if ( !amount || !code)
     return next(new ErrorHandler("Please enter both coupon and amount", 400));
 
   await Coupon.create({ code, amount });
-
   return res.status(201).json({
     success: true,
     message: `Coupon ${code} Created Successfully`,
@@ -51,7 +49,6 @@ const applyDiscount = TryCatch(async (req, res, next) => {
 
 const allCoupons = TryCatch(async (req, res, next) => {
   const coupons = await Coupon.find({});
-
   return res.status(200).json({
     success: true,
     coupons,

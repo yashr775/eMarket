@@ -8,8 +8,10 @@ import { auth } from "../firebase";
 import { useDispatch, useSelector } from "react-redux";
 import { userExist, userNotExist } from "./redux/reducer/userReducer";
 import { getUser } from "./redux/api/userAPI";
-import { UserReducerInitialState } from "./types/reducer-types";
 import ProtectedRoute from "./components/protected-route";
+import { RootState } from "./redux/store";
+import Footer from "./components/footer";
+
 const Checkout = lazy(() => import("./pages/checkout"));
 
 const Home = lazy(() => import("./pages/Home"));
@@ -39,11 +41,16 @@ const Shipping = lazy(() => import("./pages/shipping"));
 const Login = lazy(() => import("./pages/login"));
 const Orders = lazy(() => import("./pages/orders"));
 const ProductDetails = lazy(() => import("./pages/product-details"));
+const Discount = lazy(() => import("./pages/pages/discount"));
+const DiscountManagement = lazy(
+  () => import("./pages/pages/management/DiscountManagement")
+);
+const NewDiscount = lazy(() => import("./pages/pages/management/NewDiscount"));
 const NotFound = lazy(() => import("./pages/not-found"));
 
 const App = () => {
   const { user, loading } = useSelector(
-    (state: { userReducer: UserReducerInitialState }) => state.userReducer
+    (state: RootState) => state.userReducer
   );
 
   const dispatch = useDispatch();
@@ -107,6 +114,7 @@ const App = () => {
             <Route path="/admin/product" element={<Products />} />
             <Route path="/admin/transaction" element={<Transaction />} />
             <Route path="/admin/customers" element={<Customers />} />
+            <Route path="/admin/discount" element={<Discount />} />
 
             <Route path="/admin/chart/bar" element={<BarCharts />} />
             <Route path="/admin/chart/pie" element={<PieCharts />} />
@@ -122,10 +130,17 @@ const App = () => {
             <Route path="/admin/app/stopwatch" element={<Stopwatch />} />
             <Route path="/admin/app/coupon" element={<Coupon />} />
             <Route path="/admin/app/toss" element={<Toss />} />
+            <Route path="/admin/discount/new" element={<NewDiscount />} />
+
+            <Route
+              path="/admin/discount/:id"
+              element={<DiscountManagement />}
+            />
           </Route>
           <Route path="*" element={<NotFound />} />
         </Routes>
       </Suspense>
+      <Footer />
       <Toaster position="bottom-center" />
     </Router>
   );
