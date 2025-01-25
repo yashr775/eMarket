@@ -11,12 +11,15 @@ import toast from "react-hot-toast";
 import { CustomError } from "../types/api-types";
 import { useDispatch } from "react-redux";
 import { addToCart } from "../redux/reducer/cartReducer";
+import { useSearchParams } from "react-router-dom";
 
 const search = () => {
+  const searchQuery = useSearchParams()[0];
+
   const [search, setSearch] = useState("");
   const [sort, setSort] = useState("");
   const [maxPrice, setMaxPrice] = useState(100000);
-  const [category, setCategory] = useState("");
+  const [category, setCategory] = useState(searchQuery.get("category") || "");
   const [page, setPage] = useState(1);
   const dispatch = useDispatch();
 

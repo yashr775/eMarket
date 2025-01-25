@@ -1,10 +1,9 @@
-
 services:
   mongodb:
     image: mongo
     container_name: mongodb
     ports:
-      - 27017:27017
+      - "27017:27017"
     environment:
       MONGO_INITDB_ROOT_USERNAME: admin
       MONGO_INITDB_ROOT_PASSWORD: password
@@ -19,6 +18,45 @@ services:
     ports:
       - "6379:6379"
       - "8001:8001"
+    networks:
+      - backend
+
+  server:
+    build:
+      context: ./Server
+      dockerfile: Dockerfile.dev
+    container_name: server
+    ports:
+      - "4000:4000"
+    env_file:
+      - ./Server/.env
+    environment:
+      - NODE_ENV=development
+      - MONGO_URL=mongodb://admin:password@mongodb
+      - REDIS_URL = redis://localhost:6379 
+    depends_on:
+      - mongodb
+      - redis
+    volumes:
+      - ./Server:/app
+      - /app/node_modules
+    networks:
+      - backend
+
+  client:
+    build:
+      context: ./Client
+      dockerfile: Dockerfile.dev
+    container_name: client
+    ports:
+      - "5173:5173"
+    env_file:
+      - ./Client/.env
+    depends_on:
+      - server
+    volumes:
+      - ./Client:/app
+      - /app/node_modules
     networks:
       - backend
 

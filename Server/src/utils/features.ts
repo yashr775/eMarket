@@ -1,11 +1,13 @@
-import dotenv from "dotenv";
+
 import mongoose, { Document } from "mongoose";
 import { InvalidateCacheProps, OrderItemType } from "../types/types.js";
-import { myCache } from "../app.js";
+import { redis } from "../app.js";
 import { Product } from "../models/product.js";
 import { Order } from "../models/order.js";
 import { v2 as cloudinary, UploadApiResponse } from "cloudinary";
 import { Review } from "../models/review.js";
+import {Redis} from "ioredis";
+import e from "express";
 
 
 export const findAverageRatings = async (
@@ -68,14 +70,31 @@ export const connectDB = (uri: string) => {
     .catch((e) => console.error(e.message));
 };
 
+export const connectRedis = (redisURI:string) =>{
+
+const redis = new Redis(redisURI);
+
+redis.on("connect", ()=> console.log("Redis connected"));
+redis.on("error",()=> console.log(e));
+
+return redis
+
+}
+
+
 export const invalidateCache = async ({
   product,
   order,
   admin,
+  review,
   userId,
   orderId,
   productId,
 }: InvalidateCacheProps) => {
+  if (review) {
+    await redis.del([`reviews-${productId}`]);
+  }
+
   if (product) {
     const productKeys: string[] = [
       "latest-products",
@@ -83,34 +102,29 @@ export const invalidateCache = async ({
       "all-products",
     ];
 
-    // const products = await Product.find({}).select("_id");
+    if (typeof productId === "string") productKeys.push(`product-${productId}`);
 
-    if (typeof productId === "string") {
-      productKeys.push(`product-${productId}`);
-    }
+    if (typeof productId === "object")
+      productId.forEach((i) => productKeys.push(`product-${i}`));
 
-    if (typeof productId === "object") {
-      productId.forEach((i) => productKeys.push(`product-${productId}`));
-    }
-
-    // products.forEach((i) => {
-    //   productKeys.push(`product-${i._id}`);
-    // });
-
-    myCache.del(productKeys);
+    await redis.del(productKeys);
   }
-
   if (order) {
-    const orderKeys: string[] = [
+    const ordersKeys: string[] = [
       "all-orders",
       `my-orders-${userId}`,
       `order-${orderId}`,
     ];
-    const orders = await Order.find({}).select("_id");
-    orders.forEach((i) => {
-      orderKeys.push(`order-${i._id}`);
-    });
-    myCache.del(orderKeys);
+
+    await redis.del(ordersKeys);
+  }
+  if (admin) {
+    await redis.del([
+      "admin-stats",
+      "admin-pie-charts",
+      "admin-bar-charts",
+      "admin-line-charts",
+    ]);
   }
 };
 

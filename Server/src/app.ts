@@ -4,10 +4,9 @@ import productRoute from "./routes/products.js";
 import paymentRoute from "./routes/payment.js";
 import orderRoute from "./routes/orders.js";
 import statsRoute from "./routes/stats.js";
-import { connectDB } from "./utils/features.js";
+import { connectDB, connectRedis } from "./utils/features.js";
 import dotenv from "dotenv";
 import { errorMiddleware } from "./middlewares/error.js";
-import NodeCache from "node-cache";
 import morgan from "morgan";
 import cors from "cors";
 import Stripe from "stripe";
@@ -18,6 +17,9 @@ dotenv.config({ path: ".env" });
 const MONGOURL = process.env.MONGO_URL || "fvgfdgfd";
 const stripeKey = process.env.STRIPE_KEY || "";
 const clientURL = process.env.CLIENT_URL || "";
+const redisURL = process.env.REDIS_URL || ""
+export const redisTTL = process.env.REDIS_TTL || 60 * 60 * 4;
+
 const PORT = process.env.PORT || 3000;
 const app = express();
 app.use(express.json());
@@ -33,12 +35,15 @@ app.use(
 
 export const stripe = new Stripe(stripeKey);
 connectDB(MONGOURL);
+export const redis = connectRedis(redisURL)
+
 cloudinary.config({
   cloud_name: process.env.CLOUD_NAME,
   api_key: process.env.CLOUD_API_KEY,
   api_secret: process.env.CLOUD_API_SECRET,
 });
-export const myCache = new NodeCache();
+
+
 app.get("/", (req, res) => {
   res.status(200).send("App working");
 });
